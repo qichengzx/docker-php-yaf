@@ -44,6 +44,7 @@ RUN	apk add --update \
 		php7-ctype \
 		php7-redis \
 		php7-fpm \
+		php7-phar \
 		&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --allow-untrusted \
     	gnu-libiconv
 
@@ -61,8 +62,8 @@ RUN set -xe \
     && rm -rf /tmp/* \
     && apk del .phpize-deps
 
-RUN curl -sS https://getcomposer.org/installer | php7 \
-    --install-dir=/usr/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | \
+    php7 -- --install-dir=/usr/bin --filename=composer
 
 RUN	sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php7/php-fpm.conf && \
 	sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = 9000|g" /etc/php7/php-fpm.d/www.conf && \
